@@ -4,6 +4,7 @@ variants = read.delim("../../data/23andme/genome_Robert_Lesurf_v3_Full_201710131
 variants = variants[which(substr(as.character(variants$rsid), 1, 2) == "rs"), ]
 
 # Extract pathologic variants from clinvar
+# Download clinvar variant_summary file from ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/archive/
 clinvar = read.delim("../../data/23andme/variant_summary.txt")
 clinvar = clinvar[grep("Pathogenic", as.character(clinvar$ClinicalSignificance)), ]
 clinvar = clinvar[which(clinvar$Type == "single nucleotide variant"), ]
