@@ -26,7 +26,7 @@ for(i in common_rsid) {
 	clinvar_index = which(clinvar$RS...dbSNP. == substr(i, 3, nchar(i)))
 	clinvar_index_specific = clinvar_index[which(as.character(clinvar$AlternateAllele[clinvar_index]) %in% ttam_alleles)]
 	if(length(clinvar_index_specific) > 1)
-		stop(paste("Dang Rob, you've got multiple different pathologic variants at", i))
+		warning(paste("Dang dude, you've got multiple different pathogenic variants at", i))
 	if(length(clinvar_index_specific) == 1)
 		pvariants = rbind(pvariants, c(as.character(as.matrix(variants[ttam_index, ])), as.character(as.matrix(clinvar[clinvar_index_specific, ]))))
 }
