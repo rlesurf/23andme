@@ -1,11 +1,16 @@
+# Input file paths
+# Download clinvar variant_summary file from ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/archive/
+VARIANTS.23ANDME = "~/Data/23andme/genome_Robert_Lesurf_v3_Full_20181115153353.txt"
+VARIANTS.CLINVAR = "~/Data/23andme/variant_summary_2018-11.txt.gz"
+VARIANTS.PATHOGENIC = paste0(substr(VARIANTS.23ANDME, 0, nchar(VARIANTS.23ANDME) - 4), "_pathogenic.txt")
 
 # Load variant calls
-variants = read.delim("../../data/23andme/genome_Robert_Lesurf_v3_Full_20171013173417.txt", comment.char="#")
+variants = read.delim(VARIANTS.23ANDME, comment.char="#", header=F)
+colnames(variants) = c("rsid", "chromosome", "position", "genotype")
 variants = variants[which(substr(as.character(variants$rsid), 1, 2) == "rs"), ]
 
 # Extract pathologic variants from clinvar
-# Download clinvar variant_summary file from ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/tab_delimited/archive/
-clinvar = read.delim("../../data/23andme/variant_summary.txt")
+clinvar = read.delim(VARIANTS.CLINVAR)
 clinvar = clinvar[grep("Pathogenic", as.character(clinvar$ClinicalSignificance)), ]
 clinvar = clinvar[which(clinvar$Type == "single nucleotide variant"), ]
 clinvar = clinvar[which(clinvar$Assembly == "GRCh37"), ]
@@ -27,4 +32,4 @@ for(i in common_rsid) {
 }
 
 # Save results
-write.table(pvariants, file="../../data/23andme/genome_Robert_Lesurf_v3_Full_20171013173417_pathogenic.txt", sep="\t", quote=F, row.names=F, col.names=T)
+write.table(pvariants, file=VARIANTS.PATHOGENIC, sep="\t", quote=F, row.names=F, col.names=T)
